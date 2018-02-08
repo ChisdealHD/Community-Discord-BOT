@@ -1,0 +1,49 @@
+{
+  "token": "BOT Token HERE",
+  
+  "client_id": "BOt Client ID",
+  
+  "prefix": "PREFIX",
+  
+  "owner_id": "OWNER ID",
+  
+  "owner": "OWNER NAME",
+  
+  "twitch_api_key": "Twitch CLIENT KEY",
+  
+  "authorization": "bots.discord.pw API",
+  
+  "authorization1": "discordbots.org API",
+  
+  "twitchname": "Twitch Username",
+  
+  "admins": ["Admin1","Admin2"],
+  
+  "patron_role": "Pateron ROLE ID",
+  
+  "gamewisp_role": "GameWisp ROLE ID",
+  
+  "PRVSub_role": "Private sub ROLE ID",
+  
+  "admin_role": "Admin ROLE ID",
+  
+  "mod_role": "MOD ROLE ID",
+  
+  "subAnnounceChat": "Subscriber Announcement",
+  
+  "subAlertChat": "Subscriber Alert",
+  
+  "patron_guild": "Discord Channel ID",
+  
+  "TBOAuth": "Twitch Bot Oauth Password",
+  
+  "TBUsername": "Twitch Bot Username",
+  
+  "Channels": ["ChannelName"],
+  
+  "bf1trnkey": "BF1 TRN KEY",
+  
+  "fnltrnkey": "Fortnite TRN KEY",
+  
+  "youtube_api_key": "Youtube Api Key"
+}
