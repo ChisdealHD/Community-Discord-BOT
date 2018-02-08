@@ -1,15 +1,14 @@
 const config = require('./config.json');
 const subscribers = require('./subscribers.json');
-const admin_config = require('./admins.json');
+const admin = require('./admins.json');
 const getJSON = require("get-json");
 //const stats = require('./status.txt');
-const admins = config.admins;
-const youtube_api_key = config.youtube_api_key;
-const twitch = config.twitchname;
-const twitch_api_key = config.twitch_api_key;
-const owner = config.owner;
-const prefix = config.prefix;
-const client_id = config.client_id;
+const youtube_api_key = process.env.YT_APIKEY;
+const twitch = process.env.TWITCHUSERNAME;
+const twitch_api_key = process.env.TWITCHAPIKEY;
+const owner = process.env.OWNERID;
+const prefix = process.env.PREFIX;
+const client_id = process.env.BOT_ID;
 const started = Date()
 const os = require('os');
 const util = require("util");
@@ -28,14 +27,13 @@ const Discord = require('discord.js');
 
 const dclient = new Discord.Client();
 const music = require('discord.js-music-v11');
-const token = config.token;
 
 const rb = "```"
 
 const opts = {
     part: 'snippet',
     maxResults: 10,
-    key: config.youtube_api_key
+    key: process.env.YT_APIKEY
 }
 
 var intent;
@@ -52,32 +50,32 @@ dclient.on("guildMemberUpdate", (oldMember, newMember) => {
         list: JSON.parse(fs.readFileSync('./subscribers.json')) || [],
         path: './subscribers.json',
     };
-    if (newMember.guild.id === config.patron_guild) {
-        if (newMember.roles.has(config.patron_role)) {
+    if (newMember.guild.id === process.env.GUILDID) {
+        if (newMember.roles.has(process.env.PATERONID)) {
             if (!subscribers.list.includes(newMember.id)) {
                 console.log(dclient.users.get(newMember.id).tag + " Has Pateron Subscriber role, UserID has been Added!")
-                newMember.guild.channels.get(config.subAlertChat).send(newMember + " You are a Subscriber of Pateron, Welcome and Thank you for suppoting me <3");
-                newMember.guild.channels.get(config.subAnnounceChat).send("Please Welcome to New Subscriber @ " + newMember + "Welcome to PARTY! ");
+                newMember.guild.channels.get(process.env.SUBALERTCHATsubAlertChat).send(newMember + " You are a Subscriber of Pateron, Welcome and Thank you for suppoting me <3");
+                newMember.guild.channels.get(process.env.SUBANNUNCECHAT).send("Please Welcome to New Subscriber @ " + newMember + "Welcome to PARTY! ");
                 changeSubStatus(newMember.id, 'add', subscribers);
             }
         } else
-        if (newMember.roles.has(config.gamewisp_role)) {
+        if (newMember.roles.has(config.process.env.GAMEWISPID)) {
             if (!subscribers.list.includes(newMember.id)) {
                 console.log(dclient.users.get(newMember.id).tag + " Has Gamewisp Subscriber role, UserID has been Added!")
-                newMember.guild.channels.get(config.subAlertChat).send(newMember + " You are a Subscriber of Gamewisp, Welcome and Thank you for suppoting me <3");
-                newMember.guild.channels.get(config.subAnnounceChat).send("Please Welcome to New Subscriber @ " + newMember + "Welcome to PARTY! ");
+                newMember.guild.channels.get(process.env.SUBALERTCHATsubAlertChat).send(newMember + " You are a Subscriber of Gamewisp, Welcome and Thank you for suppoting me <3");
+                newMember.guild.channels.get(process.env.SUBANNUNCECHAT).send("Please Welcome to New Subscriber @ " + newMember + "Welcome to PARTY! ");
                 changeSubStatus(newMember.id, 'add', subscribers);
             }
         } else
-        if (newMember.roles.has(config.PRVSub_role)) {
+        if (newMember.roles.has(config.process.env.PRVROLEID)) {
             if (!subscribers.list.includes(newMember.id)) {
                 console.log(dclient.users.get(newMember.id).tag + " Has Private Subscriber role, UserID has been Added!")
                 changeSubStatus(newMember.id, 'add', subscribers);
             }
         } else if (subscribers.list.includes(newMember.id)) {
             if (!subscribers.list.includes(newMember.username)) {
-                newMember.guild.channels.get(config.subAlertChat).send(newMember + " Your Subscriber Has Expired!, Means you can't Access PRO commands. Make sure you Resub at Gamewisp/Pateron get access again. thank you for support <3");
-                newMember.guild.channels.get(config.subAnnounceChat).send(newMember + " Has been Removed, Because Subscriber Role has been Expired on User!. Make sure Resub If want keep Your Role.... ");
+                newMember.guild.channels.get(process.env.SUBALERTCHATsubAlertChat).send(newMember + " Your Subscriber Has Expired!, Means you can't Access PRO commands. Make sure you Resub at Gamewisp/Pateron get access again. thank you for support <3");
+                newMember.guild.channels.get(process.env.SUBANNUNCECHAT).send(newMember + " Has been Removed, Because Subscriber Role has been Expired on User!. Make sure Resub If want keep Your Role.... ");
             }
             console.log(dclient.users.get(newMember.id).tag + " Subscriber has been Expired! Announced has been take Place.")
             changeSubStatus(newMember.id, 'remove', subscribers);
@@ -88,14 +86,14 @@ dclient.on("guildMemberUpdate", (oldMember, newMember) => {
         list: JSON.parse(fs.readFileSync('./admins.json')) || [],
         path: './admins.json',
     };
-    if (newMember.guild.id === config.patron_guild) {
+    if (newMember.guild.id === process.env.GUILDID) {
         if (newMember.roles.has(config.admin_role)) {
             if (!staff.list.includes(newMember.id)) {
                 console.log(dclient.users.get(newMember.id).tag + " Has Admin role, UserID has been Added!")
                 changeSubStatus(newMember.id, 'add', staff);
             }
         } else
-        if (newMember.roles.has(config.mod_role)) {
+        if (newMember.roles.has(process.env.MODID)) {
             if (!staff.list.includes(newMember.id)) {
                 console.log(dclient.users.get(newMember.id).tag + " Has Mod role, UserID has been Added!")
                 changeSubStatus(newMember.id, 'add', staff);
@@ -865,20 +863,6 @@ dclient.on('message', message => {
         }
     }
 
-    /*if (message.content === 'table fight') {
-        message.channel.send("Im done with this!").then(function(message) {
-            message.edit("(╯°□°）╯︵ ┻━┻")
-            message.edit("be Nice or i Kill YA!")
-            message.edit("┬──┬ ¯\_(ツ)")
-            message.edit("NEVER!")
-            message.edit("(ノಠ益ಠ)ノ彡┻━┻")
-            message.edit("Really, be Good boy!")
-            message.edit("┬─┬ノ( º _ ºノ)")
-            message.edit("F* This We all do it!")
-            message.edit("(╯°□°)╯︵ ┻━┻ ︵ ノ(°□°ノ)")
-        })
-    }*/
-
     if (message.content === prefix + 'server') {
         if (message.guild.available = true) {
             console.log("Server has been SCANNED at " + message.guild.name)
@@ -921,18 +905,6 @@ dclient.on('message', message => {
 
         message.channel.send({ embed })
     }
-
-    /*if (message.content.startsWith(prefix + 'broadcast')) {
-        if (isCommander(message.author.id)) {
-            var mes = message.content.split(" ").slice(1).join(" ");
-            for (var i = 0; i < dclient.guild.length; i++) {
-                message.channel.send(dclient.guild[i].defaultChannel, mes);
-                console.log(mes)
-            }
-        } else {
-            message.channel.send("You are not a Owner of this bot! Access DENIED!")
-        }
-    }*/
 
     /*if (message.content.startsWith(prefix + 'help')) {
         message.channel.sendMessage("", {
@@ -1156,74 +1128,8 @@ dclient.on('ready', function() {
     }, 120000)
 });
 
-/*const DRPClient = require('discord-rich-presence')('385581925126897686');
-DRPClient.updatePresence({
-    state: 'I be up at 10AM or 9AM',
-    details: 'ChisdealHD is SLEEPING!',
-    startTimestamp: Date.now(),
-    endTimestamp: Date.now() + 1517821200,
-    largeImageKey: 'chislogo',
-    smallImageKey: 'alarmclock',
-    instance: true,
-});*/
-
 
 music(dclient);
 
 
 dclient.login(process.env.BOT_TOKEN);
-
-
-// start twitch
-/*var tmi = require("tmi.js");
-var options = {
-    options: {
-        debug: true
-    },
-    connection: {
-        recconect: true
-    },
-    identity: {
-        username: config.TBUsername,
-        password: config.TBOAuth
-    },
-    channels: ["#chisdemeth"]
-};
-
-var client = new tmi.client(options);
-
-//connect client to the server...
-client.connect().then(function(data) {
-    client.action(channel, "Hello World!").then(function(data) {
-        //data returns [channel]
-    }).catch(function(err) {
-        //
-    });
-}).catch(function(er) {
-
-});
-
-client.on("chat", function(channel, userstate, message, self) {
-    if (self) return;
-    //commands go here
-    if (message.startsWith("!ping")) {
-        /*var channel = dclient.channels.find('name', 'chisdealmethschat');
-        channel.send('Pont');
-        console.log(dclient.channels.first());*/
-        /*client.say(channel, 'EYA');
-    };
-    //relays twitch chat to discord server
-    var channel = dclient.channels.find('name', 'chisdealmethschat');
-    var username = userstate['username'];
-    channel.send('Twitch: **' + username + '**: ' + message);
-});
-
-/*dclient.on('message', function(message) {
-	if (message.author.bot) return
-	if (dclient.channels.find('name', 'chisdealmethschat').id) {
-    var username = message.author.tag;
-    var discordname = message.guild.name;
-    var message = message.content;
-    client.say("#nate_playz14", 'Discord - ' + discordname + ': ' + username + ': ' + message);
-	}
-});*/
