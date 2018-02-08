@@ -19,7 +19,7 @@
   },
   "devDependencies": {},
   "scripts": {
-    "test": "nodemon run.js"
+    "start": "nodemon run.js"
   },
   "repository": {
     "type": "git",
