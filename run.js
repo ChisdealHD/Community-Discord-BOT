@@ -241,32 +241,6 @@ dclient.on('message', message => {
         return config.owner_id === id || config.admins.includes(id) || subscribers.includes(id) || admin_config.includes(id);
     };
 
-    /*(function(){
-    	request({url:"http://discoin.sidetrip.xyz/transactions", headers: {'Authorization': process.env.DISCOIN_TOKEN}}, function(error, response, body) {
-    		if (!error && response.statusCode === 200) {
-    			body = JSON.parse(body);
-    			body.forEach(t => {
-    				var leaccount = accounts.find(function(item) {
-    					return item.user === t.user;
-    				});
-    				if (leaccount === undefined) {
-    					leaccount = {user:t.user,balance:t.amount};
-    					accounts.push(leaccount);
-    					dclient.users.get(t.user).send("You don't have an account created...Creating an account for you! Please also read for information on payment: <http://discordtel.readthedocs.io/en/latest/Payment/>");
-    				}
-    				else {
-    					accounts.splice(accounts.indexOf(leaccount), 1);
-    					leaccount.balance += t.amount;
-    					accounts.push(leaccount);
-    				}
-    				fs.writeFileSync("./account.json", JSON.stringify(accounts), "utf8");
-    				dclient.users.get(t.user).send("You've received ¥"+t.amount+" from Discoin (Transaction ID: "+t.receipt+").\n*You can check all your transactions at <http://discoin.sidetrip.xyz/record>.*");
-    				dclient.channels.get("282253502779228160").send(":repeat: User __"+dclient.users.get(t.user).username+"#"+dclient.users.get(t.user).discriminator+"__ ("+t.user+") received ¥"+t.amount+" from Discoin.");
-    			});
-    		}
-    	});
-    }, 60000);*/
-
     //Commands HERE!
 
     if (message.content.startsWith(prefix + 'ping')) {
