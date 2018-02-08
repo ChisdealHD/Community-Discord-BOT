@@ -1171,7 +1171,7 @@ DRPClient.updatePresence({
 music(dclient);
 
 
-dclient.login(token);
+dclient.login(process.env.BOT_TOKEN);
 
 
 // start twitch
